@@ -16,17 +16,17 @@ builder.Services.AddOpenApiDocument(config =>
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+// if (app.Environment.IsDevelopment())
+// {
+app.UseOpenApi();
+app.UseSwaggerUi(config =>
 {
-    app.UseOpenApi();
-    app.UseSwaggerUi(config =>
-    {
-        config.DocumentTitle = "TodoAPI";
-        config.Path = "/swagger";
-        config.DocumentPath = "/swagger/{documentName}/swagger.json";
-        config.DocExpansion = "list";
-    });
-}
+    config.DocumentTitle = "TodoAPI";
+    config.Path = "/swagger";
+    config.DocumentPath = "/swagger/{documentName}/swagger.json";
+    config.DocExpansion = "list";
+});
+// }
 
 // <snippet_group>
 RouteGroupBuilder todoItems = app.MapGroup("/todoitems");
@@ -49,7 +49,8 @@ static async Task<IResult> GetAllTodos(TodoDb db)
 }
 // </snippet_getalltodos>
 
-static async Task<IResult> GetCompleteTodos(TodoDb db) {
+static async Task<IResult> GetCompleteTodos(TodoDb db)
+{
     return TypedResults.Ok(await db.Todos.Where(t => t.IsComplete).Select(x => new TodoItemDTO(x)).ToListAsync());
 }
 
