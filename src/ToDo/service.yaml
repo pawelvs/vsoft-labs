@@ -10,4 +10,4 @@ spec:
     - name: name-of-service-port-todo
       protocol: TCP
       port: 80
-      targetPort: http-web-svc
+      targetPort: 8080
