@@ -4,7 +4,8 @@ metadata:
   name: todo-service
 spec:
   selector:
-    app.kubernetes.io/name: todo
+    app: todo
+  type: LoadBalancer
   ports:
     - name: name-of-service-port-todo
       protocol: TCP
