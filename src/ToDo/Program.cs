@@ -23,8 +23,7 @@ builder.Services.AddOpenApiDocument(config =>
 
 var app = builder.Build();
 
-// if (app.Environment.IsDevelopment())
-// {
+
 app.UseOpenApi();
 app.UseSwaggerUi(config =>
 {
@@ -34,11 +33,11 @@ app.UseSwaggerUi(config =>
     config.DocExpansion = "list";
 });
 
-
-// }
-
 // <snippet_group>
 RouteGroupBuilder todoItems = app.MapGroup("/todoitems");
+
+
+app.Services.GetService<TodoDb>()!.Database.Migrate();
 
 todoItems.MapGet("/", GetAllTodos);
 todoItems.MapGet("/complete", GetCompleteTodos);
