@@ -3,7 +3,14 @@ using NSwag.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<TodoDb>(opt => opt.UseInMemoryDatabase("TodoList"));
+
+var connString = builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING");
+
+
+
+
+
+builder.Services.AddDbContext<TodoDb>(opt => opt.UseSqlServer(connString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -26,6 +33,8 @@ app.UseSwaggerUi(config =>
     config.DocumentPath = "/swagger/{documentName}/swagger.json";
     config.DocExpansion = "list";
 });
+
+
 // }
 
 // <snippet_group>
