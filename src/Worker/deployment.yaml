@@ -39,3 +39,24 @@ spec:
             limits:
               cpu: "200m"
               memory: "256Mi"
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: todo-worker-scaler
+spec:
+  scaleTargetRef:
+    name: todoeventsprocessor-deployment
+  minReplicaCount: 0  # Worker skaluje się do 0 gdy nie ma wiadomości
+  maxReplicaCount: 10
+  pollingInterval: 5  # Sprawdzaj co 5 sekund
+  cooldownPeriod: 30  # Czekaj 30 sekund przed skalowaniem w dół
+  triggers:
+  - type: azure-servicebus
+    metadata:
+      queueName: todoevents
+      messageCount: "5"  # Skaluj gdy jest więcej niż 5 wiadomości
+    secretTargetRef:
+    - parameter: connection
+      name: servicebus-secret
+      key: connection
