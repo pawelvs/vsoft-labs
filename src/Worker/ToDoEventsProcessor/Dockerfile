@@ -14,6 +14,6 @@ RUN dotnet publish -c Release -o out
 # Zbuduj runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /App
-COPY --from=build-env /src//Worker/ToDoEventsProcessor/out .
+COPY --from=build-env /src/Worker/ToDoEventsProcessor/out .
 RUN ls -a
 ENTRYPOINT ["dotnet", "ToDoEventsProcessor.dll"]

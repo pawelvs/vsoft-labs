@@ -33,7 +33,7 @@ jobs:
           registry: ${{ secrets.ACR_LOGIN_SERVER }}
           repository: todo
           image: worker
-          folder: src/worker/ToDoEventsProcessor
+          folder: src/Worker/ToDoEventsProcessor
           branch: main
           tag: ${{ github.sha }}
       - name: Azure login
