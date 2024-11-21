@@ -5,6 +5,7 @@ metadata:
   annotations:
     azure.workload.identity/client-id: "b89e1e8c-6408-4389-8a3f-daefbf054b21"
 ---
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: todo-deployment
