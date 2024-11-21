@@ -5,7 +5,7 @@ metadata:
 spec:
   selector:
     app: todo
-  type: LoadBalancer
+  type: ClusterIP
   ports:
     - name: name-of-service-port-todo
       protocol: TCP
