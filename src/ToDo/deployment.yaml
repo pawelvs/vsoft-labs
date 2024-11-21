@@ -1,4 +1,10 @@
-apiVersion: apps/v1
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: todo
+  annotations:
+    azure.workload.identity/client-id: "b89e1e8c-6408-4389-8a3f-daefbf054b21"
+---
 kind: Deployment
 metadata:
   name: todo-deployment
@@ -13,13 +19,15 @@ spec:
     metadata:
       labels:
         app: todo
+        azure.workload.identity/use: "true"
     spec:
+      serviceAccountName: todo
       containers:
         - name: todo
           image: vsoftlabteam1.azurecr.io/todo/api:latest
           env:
             - name: AZURE_SQL_CONNECTIONSTRING
-              value: "Server=tcp:vsoftlabteam1server.database.windows.net,1433;Initial Catalog=ToDo;Persist Security Info=False;User ID=vsoftadmin;Password=Vsoft123$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+              value: "Server=tcp:vsoftlabteam1server.database.windows.net,1433;Initial Catalog=ToDo;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Authentication=\"Active Directory Default\";"
           ports:
             - containerPort: 80
           resources: {}
