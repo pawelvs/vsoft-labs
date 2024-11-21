@@ -7,6 +7,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{761C9EB7-9BE
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoApi", "src\ToDo\TodoApi.csproj", "{CE309775-179D-4D21-BFDA-8D8049D6D536}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Worker", "Worker", "{B1769364-DDF5-45DF-8677-06AE894D0162}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoEventsProcessor", "src\Worker\ToDoEventsProcessor\ToDoEventsProcessor.csproj", "{0884215E-44AA-413F-BAF7-B5EEFBF363AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,12 +21,18 @@ Global
 		{CE309775-179D-4D21-BFDA-8D8049D6D536}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE309775-179D-4D21-BFDA-8D8049D6D536}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE309775-179D-4D21-BFDA-8D8049D6D536}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0884215E-44AA-413F-BAF7-B5EEFBF363AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0884215E-44AA-413F-BAF7-B5EEFBF363AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0884215E-44AA-413F-BAF7-B5EEFBF363AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0884215E-44AA-413F-BAF7-B5EEFBF363AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{CE309775-179D-4D21-BFDA-8D8049D6D536} = {761C9EB7-9BE6-49D6-9AA3-F45A5B293707}
+		{B1769364-DDF5-45DF-8677-06AE894D0162} = {761C9EB7-9BE6-49D6-9AA3-F45A5B293707}
+		{0884215E-44AA-413F-BAF7-B5EEFBF363AD} = {B1769364-DDF5-45DF-8677-06AE894D0162}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FEC014AD-7557-4D51-8D2A-1A0545265B64}

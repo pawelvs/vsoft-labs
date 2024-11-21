@@ -10,8 +10,6 @@ using Azure.Messaging.ServiceBus;
 
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
-using k8s;
-
 
 
 var builder = WebApplication.CreateBuilder(args);

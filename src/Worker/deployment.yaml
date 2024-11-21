@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: todoeventsprocessor
+  annotations:
+    azure.workload.identity/client-id: "b89e1e8c-6408-4389-8a3f-daefbf054b21"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todoeventsprocessor-deployment
+  labels:
+    app: todoeventsprocessor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todoeventsprocessor
+  template:
+    metadata:
+      labels:
+        app: todoeventsprocessor
+        azure.workload.identity/use: "true"
+    spec:
+      serviceAccountName: wi-vsoftlabteam1
+      containers:
+        - name: todoeventsprocessor
+          image: vsoftlabteam1.azurecr.io/todoeventsprocessor/worker:latest
+          env:
+            - name: StorageAccountName
+              value: "vsoftlabteam1"
+            - name: APPLICATIONINSIGHTS_CONNECTION_STRING
+              value: "InstrumentationKey=b53c6226-2e90-4432-8f1f-34aaadb40fc8;IngestionEndpoint=https://polandcentral-0.in.applicationinsights.azure.com/;LiveEndpoint=https://polandcentral.livediagnostics.monitor.azure.com/;ApplicationId=4ef1d3e0-83d8-4ff4-a0e1-3e9e3eb577b5"
+            - name: KeyVaultName
+              value: "vsoftlabteam1"
+          resources: {}
