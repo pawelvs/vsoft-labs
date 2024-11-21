@@ -10,12 +10,19 @@ using Azure.Messaging.ServiceBus;
 
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
+using k8s;
 
 
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connString = builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING");
+
+var config = KubernetesClientConfiguration.BuildConfigFromConfigFile();
+var client = new Kubernetes(config);
+var deployment = await client.ReadNamespacedDeploymentAsync("todo", "default");
+
+var connString = deployment.Spec.Template.Spec.Containers.First().Env.First(e => e.Name == "AZURE_SQL_CONNECTIONSTRING").Value;
+// var connString = builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING");
 
 // Dodaj po builder.Services.AddEndpointsApiExplorer();
 var keyVaultUri = new Uri($"https://{builder.Configuration["KeyVaultName"]}.vault.azure.net/");
