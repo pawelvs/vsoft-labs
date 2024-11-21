@@ -41,22 +41,30 @@ spec:
               memory: "256Mi"
 ---
 apiVersion: keda.sh/v1alpha1
+kind: TriggerAuthentication
+metadata:
+  name: servicebus-trigger-auth
+spec:
+  secretTargetRef:
+  - parameter: connection
+    name: servicebus-secret  # Nazwa secretu
+    key: connection          # Klucz w secrecie
+---
+apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
   name: todo-worker-scaler
 spec:
   scaleTargetRef:
     name: todoeventsprocessor-deployment
-  minReplicaCount: 0  # Worker skaluje się do 0 gdy nie ma wiadomości
+  minReplicaCount: 0
   maxReplicaCount: 10
-  pollingInterval: 5  # Sprawdzaj co 5 sekund
-  cooldownPeriod: 30  # Czekaj 30 sekund przed skalowaniem w dół
+  pollingInterval: 5
+  cooldownPeriod: 30
   triggers:
   - type: azure-servicebus
     metadata:
       queueName: todoevents
-      messageCount: "5"  # Skaluj gdy jest więcej niż 5 wiadomości
-    secretTargetRef:
-    - parameter: connection
-      name: servicebus-secret
-      key: connection
+      messageCount: "5"
+    authenticationRef:
+      name: servicebus-trigger-auth  # Odwołanie do TriggerAuthentication
