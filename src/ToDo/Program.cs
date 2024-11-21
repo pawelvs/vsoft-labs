@@ -15,14 +15,13 @@ using k8s;
 
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration
+    .SetBasePath(builder.Environment.ContentRootPath)
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables();
 
-
-var config = KubernetesClientConfiguration.BuildConfigFromConfigFile();
-var client = new Kubernetes(config);
-var deployment = await client.ReadNamespacedDeploymentAsync("todo", "default");
-
-var connString = deployment.Spec.Template.Spec.Containers.First().Env.First(e => e.Name == "AZURE_SQL_CONNECTIONSTRING").Value;
-// var connString = builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING");
+var connString = builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING");
 
 // Dodaj po builder.Services.AddEndpointsApiExplorer();
 var keyVaultUri = new Uri($"https://{builder.Configuration["KeyVaultName"]}.vault.azure.net/");
