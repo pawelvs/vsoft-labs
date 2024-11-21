@@ -22,7 +22,7 @@ spec:
         app: todo
         azure.workload.identity/use: "true"
     spec:
-      serviceAccountName: todo
+      serviceAccountName: wi-vsoftlabteam1
       containers:
         - name: todo
           image: vsoftlabteam1.azurecr.io/todo/api:latest
