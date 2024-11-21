@@ -6,13 +6,24 @@ using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector;
 using Microsoft.ApplicationInsights.DependencyCollector;
 using Microsoft.ApplicationInsights.Kubernetes;
+using Azure.Messaging.ServiceBus;
+
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 var connString = builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING");
 
+// Dodaj po builder.Services.AddEndpointsApiExplorer();
+var keyVaultUri = new Uri($"https://{builder.Configuration["KeyVaultName"]}.vault.azure.net/");
+var secretClient = new SecretClient(keyVaultUri, new DefaultAzureCredential());
+var serviceBusConnection = secretClient.GetSecret("ServiceBusConnection").Value.Value;
 
-
+builder.Services.AddSingleton(new ServiceBusClient(serviceBusConnection));
+builder.Services.AddSingleton<ServiceBusService>();
 
 
 builder.Services.AddDbContext<TodoDb>(opt => opt.UseSqlServer(connString));
@@ -87,7 +98,7 @@ static async Task<IResult> GetTodo(int id, TodoDb db)
             : TypedResults.NotFound();
 }
 
-static async Task<IResult> CreateTodo(TodoItemDTO todoItemDTO, TodoDb db)
+static async Task<IResult> CreateTodo(TodoItemDTO todoItemDTO, TodoDb db, ServiceBusService serviceBus)
 {
     var todoItem = new Todo
     {
@@ -98,9 +109,10 @@ static async Task<IResult> CreateTodo(TodoItemDTO todoItemDTO, TodoDb db)
     db.Todos.Add(todoItem);
     await db.SaveChangesAsync();
 
-    todoItemDTO = new TodoItemDTO(todoItem);
+    var dto = new TodoItemDTO(todoItem);
+    await serviceBus.SendMessageAsync(new TodoEvent("TodoCreated", dto));
 
-    return TypedResults.Created($"/todoitems/{todoItem.Id}", todoItemDTO);
+    return TypedResults.Created($"/todoitems/{todoItem.Id}", dto);
 }
 
 static async Task<IResult> UpdateTodo(int id, TodoItemDTO todoItemDTO, TodoDb db)
