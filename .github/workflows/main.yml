@@ -58,8 +58,8 @@ jobs:
           manifests: |
             src/ToDo/deployment.yaml
             src/ToDo/service.yaml
-            src/Worker/ToDoEventsProcessor/deployment.yaml
-          images: | 
+            src/Worker/deployment.yaml
+          images: |
             ${{ secrets.ACR_LOGIN_SERVER }}.azurecr.io/todo/api:${{ github.sha }}
             ${{ secrets.ACR_LOGIN_SERVER }}.azurecr.io/todoeventsprocessor/worker:${{ github.sha }}
           pull-images: false
