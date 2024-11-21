@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: todo
-          image: vsoftlabteam1.azurecr.io/todo/api
+          image: vsoftlabteam1.azurecr.io/todo/api:latest
           env:
             - name: AZURE_SQL_CONNECTIONSTRING
               value: "Server=tcp:vsoftlabteam1server.database.windows.net,1433;Initial Catalog=ToDo;Persist Security Info=False;User ID=vsoftadmin;Password=Vsoft123$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
