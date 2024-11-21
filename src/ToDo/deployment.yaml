@@ -24,7 +24,7 @@ spec:
       serviceAccountName: wi-vsoftlabteam1
       containers:
         - name: todo
-          image: vsoftlabteam1.azurecr.io/todo/api:latest
+          image: vsoftlabteam1.azurecr.io/todo/api:571fa8e0c6088ec193238d579795dcf7fa050bba
           env:
             - name: AZURE_SQL_CONNECTIONSTRING
               value: 'Server=tcp:vsoftlabteam1server.database.windows.net,1433;Initial Catalog=ToDo;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Authentication="Active Directory Default";'
@@ -49,12 +49,12 @@ metadata:
 spec:
   scaleTargetRef:
     name: todo-deployment
-  minReplicaCount: 1  # API zawsze musi mieć minimum jedną instancję
+  minReplicaCount: 1 # API zawsze musi mieć minimum jedną instancję
   maxReplicaCount: 10
   pollingInterval: 15
   cooldownPeriod: 60
   triggers:
-  - type: cpu
-    metadata:
-      type: Utilization
-      value: "60"  # Skaluj gdy średnie użycie CPU przekracza 60%
+    - type: cpu
+      metadata:
+        type: Utilization
+        value: "5" # Skaluj gdy średnie użycie CPU przekracza 60%
