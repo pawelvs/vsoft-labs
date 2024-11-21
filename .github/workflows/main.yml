@@ -31,7 +31,7 @@ jobs:
           service_principal_password: ${{ secrets.AZURE_CLIENT_SECRET }}
           tenant: ${{ secrets.AZURE_TENANT_ID }}
           registry: ${{ secrets.ACR_LOGIN_SERVER }}
-          repository: todo
+          repository: todoeventsprocessor
           image: worker
           folder: src/Worker/ToDoEventsProcessor
           branch: main
@@ -58,5 +58,8 @@ jobs:
           manifests: |
             src/ToDo/deployment.yaml
             src/ToDo/service.yaml
-          images: "${{ secrets.ACR_LOGIN_SERVER }}.azurecr.io/todo/api:${{ github.sha }}"
+            src/Worker/ToDoEventsProcessor/deployment.yaml
+          images: | 
+            ${{ secrets.ACR_LOGIN_SERVER }}.azurecr.io/todo/api:${{ github.sha }}
+            ${{ secrets.ACR_LOGIN_SERVER }}.azurecr.io/todoeventsprocessor/worker:${{ github.sha }}
           pull-images: false
