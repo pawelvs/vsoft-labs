@@ -1,6 +1,11 @@
 // <snippet_all>
 using NSwag.AspNetCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.ApplicationInsights.AspNetCore.Extensions;
+using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector;
+using Microsoft.ApplicationInsights.DependencyCollector;
+using Microsoft.ApplicationInsights.Kubernetes;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +25,18 @@ builder.Services.AddOpenApiDocument(config =>
     config.Title = "TodoAPI v1";
     config.Version = "v1";
 });
+
+builder.Services.AddApplicationInsightsTelemetry(options =>
+{
+    options.EnableAdaptiveSampling = false; // Wyłączenie adaptacyjnego samplingu
+    options.EnableDependencyTrackingTelemetryModule = true; // Distributed tracing
+    options.EnablePerformanceCounterCollectionModule = true; // Metryki wydajności
+    options.EnableAppServicesHeartbeatTelemetryModule = true; // Heartbeat
+    options.EnableDebugLogger = true; // Debugowanie w konsoli (dla deweloperów)
+});
+
+// Dodanie Kubernetes Enricher
+builder.Services.AddApplicationInsightsKubernetesEnricher();
 
 var app = builder.Build();
 
