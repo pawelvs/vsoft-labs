@@ -15,11 +15,11 @@ spec:
         app: todo
     spec:
       containers:
-      - name: todo
-        image: vsoftlabteam1.azurecr.io/todo
-        env:
-        - name: AZURE_SQL_CONNECTIONSTRING
-          value: "Server=tcp:vsoftlabteam1server.database.windows.net,1433;Initial Catalog=ToDo;Persist Security Info=False;User ID=vsoftadmin;Password=Vsoft123$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
-        ports:
-        - containerPort: 80
-        resources: {}
+        - name: todo
+          image: vsoftlabteam1.azurecr.io/todo/api
+          env:
+            - name: AZURE_SQL_CONNECTIONSTRING
+              value: "Server=tcp:vsoftlabteam1server.database.windows.net,1433;Initial Catalog=ToDo;Persist Security Info=False;User ID=vsoftadmin;Password=Vsoft123$;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+          ports:
+            - containerPort: 80
+          resources: {}

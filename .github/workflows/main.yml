@@ -28,8 +28,8 @@ jobs:
         id: set-context
         uses: azure/aks-set-context@v3
         with:
-          resource-group: "${{ secrets.resource_group }}"
-          cluster-name: "${{ secrets.cluster_name }}"
+          resource-group: team1
+          cluster-name: vsoftlabteam1 #nazwa klastra AKS
       - name: Setup kubectl
         id: install-kubectl
         uses: azure/setup-kubectl@v3
@@ -39,6 +39,7 @@ jobs:
         with:
           namespace: "default"
           manifests: |
-            azure-vote-all-in-one-redis.yaml
-          images: "${{ secrets.ACR_LOGIN_SERVER }}.azurecr.io/todo/azure-vote-front:${{ github.sha }}"
+            src/ToDo/deployment.yaml
+            src/ToDo/service.yaml
+          images: "${{ secrets.ACR_LOGIN_SERVER }}.azurecr.io/todo/api:${{ github.sha }}"
           pull-images: false
