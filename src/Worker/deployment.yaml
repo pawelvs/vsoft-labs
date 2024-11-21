@@ -12,7 +12,6 @@ metadata:
   labels:
     app: todoeventsprocessor
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: todoeventsprocessor
@@ -33,4 +32,10 @@ spec:
               value: "InstrumentationKey=b53c6226-2e90-4432-8f1f-34aaadb40fc8;IngestionEndpoint=https://polandcentral-0.in.applicationinsights.azure.com/;LiveEndpoint=https://polandcentral.livediagnostics.monitor.azure.com/;ApplicationId=4ef1d3e0-83d8-4ff4-a0e1-3e9e3eb577b5"
             - name: KeyVaultName
               value: "vsoftlabteam1"
-          resources: {}
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "200m"
+              memory: "256Mi"

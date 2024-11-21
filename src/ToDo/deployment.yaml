@@ -12,7 +12,6 @@ metadata:
   labels:
     app: todo
 spec:
-  replicas: 3
   selector:
     matchLabels:
       app: todo
@@ -28,11 +27,17 @@ spec:
           image: vsoftlabteam1.azurecr.io/todo/api:latest
           env:
             - name: AZURE_SQL_CONNECTIONSTRING
-              value: "Server=tcp:vsoftlabteam1server.database.windows.net,1433;Initial Catalog=ToDo;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Authentication=\"Active Directory Default\";"
+              value: 'Server=tcp:vsoftlabteam1server.database.windows.net,1433;Initial Catalog=ToDo;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Authentication="Active Directory Default";'
             - name: APPLICATIONINSIGHTS_CONNECTION_STRING
               value: "InstrumentationKey=b53c6226-2e90-4432-8f1f-34aaadb40fc8;IngestionEndpoint=https://polandcentral-0.in.applicationinsights.azure.com/;LiveEndpoint=https://polandcentral.livediagnostics.monitor.azure.com/;ApplicationId=4ef1d3e0-83d8-4ff4-a0e1-3e9e3eb577b5"
             - name: KeyVaultName
               value: "vsoftlabteam1"
           ports:
             - containerPort: 80
-          resources: {}
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "200m"
+              memory: "256Mi"
