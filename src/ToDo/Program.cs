@@ -121,7 +121,7 @@ static async Task<IResult> CreateTodo(TodoItemDTO todoItemDTO, TodoDb db, Servic
     return TypedResults.Created($"/todoitems/{todoItem.Id}", dto);
 }
 
-static async Task<IResult> UpdateTodo(int id, TodoItemDTO todoItemDTO, TodoDb db)
+static async Task<IResult> UpdateTodo(int id, TodoItemDTO todoItemDTO, TodoDb db, ServiceBusService serviceBus)
 {
     var todo = await db.Todos.FindAsync(id);
 
@@ -132,15 +132,18 @@ static async Task<IResult> UpdateTodo(int id, TodoItemDTO todoItemDTO, TodoDb db
 
     await db.SaveChangesAsync();
 
+    await serviceBus.SendMessageAsync(new TodoEvent(nameof(UpdateTodo), todoItemDTO));
     return TypedResults.NoContent();
 }
 
-static async Task<IResult> DeleteTodo(int id, TodoDb db)
+static async Task<IResult> DeleteTodo(int id, TodoDb db, ServiceBusService service)
 {
     if (await db.Todos.FindAsync(id) is Todo todo)
     {
         db.Todos.Remove(todo);
         await db.SaveChangesAsync();
+        var dto = new TodoItemDTO(todo);
+        await service.SendMessageAsync(new TodoEvent(nameof(DeleteTodo), dto));
         return TypedResults.NoContent();
     }
 
